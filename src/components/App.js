@@ -13,20 +13,25 @@ const App=()=>
     {
         const helperCoords= async()=>
         {
-            const res= await axios.get("http://www.mapquestapi.com/geocoding/v1/address?key=8nXK1Op2BKzGt7HNK8xL1E258shfqusA&location="+location);
+            const res= await axios.get("http://api.weatherapi.com/v1/current.json?key=5d6e85404b024ada8e8134834201910&q="+location)
             //available hai results of coords
-            const lat=res.data.results[0].locations[0].latLng.lat
-            const long=res.data.results[0].locations[0].latLng.lng
+            const lat=res.data.location.lat
+            const long=res.data.location.lon
+            setCooWeather({
+                coords: [lat,long],
+                weather: res.data
+            })
+        //     const long=res.data.results[0].locations[0].latLng.lng
                 
-            const helper=async()=>
-            {
-                const res= await axios.get("http://api.weatherapi.com/v1/current.json?key=5d6e85404b024ada8e8134834201910&q="+location)
-                setCooWeather({
-                    coords: [lat,long],
-                    weather: res.data
-                })
-            }
-           helper()
+        //     const helper=async()=>
+        //     {
+        //         const res= await axios.get("http://api.weatherapi.com/v1/current.json?key=5d6e85404b024ada8e8134834201910&q="+location)
+        //         setCooWeather({
+        //             coords: [lat,long],
+        //             weather: res.data
+        //         })
+        //     }
+        //    helper()
         }
         const timeOutID=setTimeout(()=>
         {
@@ -47,7 +52,7 @@ const App=()=>
         return  (<div className="container">
         <div className="row">
             <div className="col-1 ">
-            <button className="btn btn-md btn-info" style={{marginTop: "20px"}}>Search: </button>
+            <button className="btn btn-md btn-info" style={{marginTop: "20px"}}>Search </button>
             </div>
             <div className="col-11 ">
             <input type="text" className="form-control" value={location} style={{width: "45%", marginTop: "20px"}} onChange={
@@ -58,7 +63,7 @@ const App=()=>
             </div>
 
             <div className="col-12">
-            <h1>Valid Input dijiye</h1>
+            <h1>Give some input</h1>
             </div>
 
  
