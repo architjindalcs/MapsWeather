@@ -1,26 +1,35 @@
-import React from "react"
-import "./Map.css"
-import L from "leaflet"
+import React, { useEffect, useState } from "react"
+import ReactMapGL, {Marker} from "react-map-gl"
 
-class App extends React.Component
+const App=(props)=>
 {
+ 
+    const[viewport,setViewport]=useState({
+        latitude: props.lat,
+        longitude: props.long,
+        width: "50vw",
+        height: "50vh",
+        zoom: 10,
+        changing: false
+    })
+    useEffect(()=>{
+        if(viewport.changing) return;
+        setViewport(props.defViewPort)
+    })
 
-    render()
-    {
-        var mymap = L.map('mapid').setView([29.27342,  77.03465], 12);
+        return (<div className="container" >
+            <ReactMapGL {...viewport} mapboxApiAccessToken="pk.eyJ1IjoiYXJjaGl0amluZGFsIiwiYSI6ImNrZ2dzeTBhODA3bjMydHRlaXR3ZHplam0ifQ.cld7UnJbhZpC4dIwNa9f3g"
+                mapStyle="mapbox://styles/mapbox/streets-v11"
+                onViewportChange={
+                    (viewport)=>{
+                        viewport.changing=true     
+                        setViewport(viewport)
+                    }
+                } >
 
-        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-            maxZoom: 15,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox/streets-v11',
-            tileSize: 512,
-            zoomOffset: -1
-        }).addTo(mymap);
-        
-        L.marker([29.27342,  77.03465]).addTo(mymap);
-        return(<div id="mapid" style="width: 600px; height: 400px;"></div>)
-    }
+                </ReactMapGL>
+        </div>)
+   
 }
+
 export default App
